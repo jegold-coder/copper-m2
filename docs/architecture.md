@@ -82,3 +82,29 @@ When a module changes how the app fits together, add a section here:
 **Risks and open questions:** cost, privacy, accuracy or safety risks, and how
 you handle them.
 ```
+
+## Module 2: Ask Copper
+
+**Summary:** a floating chat panel that answers price and stock questions by
+calling tools (ordinary code) instead of guessing, and shows each step as it
+streams in.
+
+| Piece | Where | What it does |
+|---|---|---|
+| Page | `app/page.tsx` | Mounts the panel and passes `isAiConfigured()` to it |
+| Components | `components/copper/ask-copper.tsx`, `tool-card.tsx` | The panel, its stations, and the tool call card |
+| Server Action | `lib/copper/assistant/ask.ts` | `askCopper()` streams the answer and returns a live `Progress` |
+| Tools | `lib/copper/assistant/tools.ts` | `get_products`, `get_prices`, `calculate_cost`, `check_availability` |
+| Data | `lib/copper/data/inventory.json` | Stock list, read through `readInventory()` |
+| AI calls | `lib/ai/call.ts` (module 2, `ask-copper`) | `callStream`, up to 5 steps; tools off sends no instructions and no tools |
+
+**Data flow:** question → panel → `askCopper()` → `callStream` → model picks a
+tool → tool reads the catalog or stock → result back to the model → each step
+and the reply stream to the panel.
+
+**Decisions and trade-offs:** tools read the catalog and stock fresh each
+time, so prices and stock are never written into the instructions. Tools on
+and off are separate chats so the comparison is fair.
+
+**Risks and open questions:** with tools off the model invents prices, so that
+chat is labeled. The tools only read, so a bad call can't change anything.

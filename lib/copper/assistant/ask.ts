@@ -38,7 +38,7 @@ function snapshot(progress: Progress): Progress {
 export async function askCopper(
   request: AskCopperRequest,
 ): Promise<AskCopperResult> {
-  const { live, update, done, error } = createLive<Progress>();
+  const { live, update, done } = createLive<Progress>();
   const progress: Progress = { steps: [], reply: "", status: "working" };
 
   // Streams the answer in the background, so the panel gets `live` at once.
