@@ -106,7 +106,11 @@ export async function askCopper(
       // A stream that ends with nothing to say still ends cleanly.
       if (!progress.reply) progress.reply = APOLOGY;
       done(snapshot({ ...progress, status: "done" }));
-    } catch {
+    } catch (error) {
+      console.error(
+        "[askCopper]",
+        error instanceof Error ? error.message : String(error),
+      );
       done(
         snapshot({
           ...progress,
