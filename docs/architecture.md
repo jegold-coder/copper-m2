@@ -98,7 +98,7 @@ streams in.
 | Components | `components/copper/ask-copper.tsx`, `tool-card.tsx` | The panel, its stations, and the tool call card |
 | Server Action | `lib/copper/assistant/ask.ts` | `askCopper()` streams the answer and returns a live `Progress` |
 | Tools | `lib/copper/assistant/tools.ts` | `get_products`, `get_prices`, `calculate_cost`, `check_availability` |
-| Data | `lib/copper/data/inventory.json` | Stock list, read through `readInventory()` |
+| Data | `supabase/migrations/`, `supabase/seed.sql` | The Supabase `inventory` table (stock), read through `readInventory()` |
 | AI calls | `lib/ai/call.ts` (module 2, `ask-copper`) | `callStream`, up to 5 steps; tools off sends no instructions and no tools |
 
 **Data flow:** question → panel → `askCopper()` → `callStream` → model picks a
